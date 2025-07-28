@@ -4,6 +4,8 @@ import Services from '../Services/Services';
 import Company from '../Company/Company';
 import Benefit from '../Benifits/Benefit';
 import BeMerchant from '../Merchant/BeMerchant';
+import Customers from '../Customers/Customers';
+import Accordion from '../Accordion/Accordion';
 
 const Home = () => {
     return (
@@ -13,6 +15,8 @@ const Home = () => {
             <Company></Company>
             <Benefit></Benefit>
             <BeMerchant></BeMerchant>
+            <Customers></Customers>
+            <Accordion></Accordion>
         </div>
     );
 };

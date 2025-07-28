@@ -1,0 +1,24 @@
+/* Swiper active/side scale + fade effect */
+.swiper-slide {
+  opacity: 0.4;
+  transform: scale(0.9);
+  transition: all 0.3s ease;
+}
+.swiper-slide-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Custom pagination bullets */
+.custom-bullet {
+  width: 10px;
+  height: 10px;
+  background-color: #d1d5db;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  opacity: 0.6;
+}
+.custom-bullet-active {
+  background-color: #84cc16;
+  opacity: 1;
+}
