@@ -48,7 +48,7 @@ const Register = () => {
               password must be 6 charecter oo longer
             </p>
           )}
-          <button className="btn btn-neutral mt-4">Login</button>
+          <button className="btn btn-neutral mt-4">Register</button>
 
           <div className="divider">OR</div>
 
