@@ -13,9 +13,13 @@ const Login = () => {
     <div className="max-w-lg shrink-0 shadow-2xl">
       <div className="card-body">
         <form onSubmit={handleSubmit(onSubmit)} className="fieldset">
+          <div>
+            <h1 className="text-4xl font-bold">Welcome Back</h1>
+            <p>Login with ProFast</p>
+          </div>
           {/* email  */}
           <label className="label">Email</label>
-          <input type="email" {...register('email')} className="input" placeholder="Email" />
+          <input type="email" {...register('email', {required:true})} className="input" placeholder="Email" />
           {/* password */}
           <label className="label">Password</label>
           <input type="password" {...register('password',  {required:true, minLength:6})} className="input" placeholder="Password" />
