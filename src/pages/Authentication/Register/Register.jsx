@@ -2,6 +2,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import UseAuth from "../../../Hooks/UseAuth";
+import { Link } from "react-router";
+import SocialLogin from "../SocialLogin/SocialLogin";
 
 const Register = () => {
   const {
@@ -9,17 +11,17 @@ const Register = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const {createUser} = UseAuth();
+  const { createUser } = UseAuth();
 
   const onSubmit = (data) => {
     console.log(data);
     createUser(data.email, data.password)
-    .then(result => {
-      console.log(result.user);
-    })
-    .catch(error => {
-      console.error(error);
-    })
+      .then((result) => {
+        console.log(result.user);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
   return (
     <div className="max-w-lg shrink-0 shadow-2xl">
@@ -48,7 +50,6 @@ const Register = () => {
             className="input"
             placeholder="Password"
           />
-
           {errors.password?.type === "required" && (
             <p className="text-red-500"> password is required</p>
           )}
@@ -57,16 +58,18 @@ const Register = () => {
               password must be 6 charecter oo longer
             </p>
           )}
-          <button className="btn btn-neutral mt-4">Register</button>
 
-          <div className="divider">OR</div>
+          {/* naviage user to login page  */}
+          <p className="items-center">
+            Already Have Account ?{" "}
+            <Link className="btn btn-link text-secondary  p-0" to={"/login"}>
+              Login
+            </Link>{" "}
+          </p>
 
-          {/* Google */}
-          <button className="btn bg-white text-black border-[#e5e5e5]">
-            <FcGoogle />
-            Login with Google
-          </button>
+          <button className="btn btn-primary text-black mt-4">Register</button>
         </form>
+        <SocialLogin></SocialLogin>
       </div>
     </div>
   );
