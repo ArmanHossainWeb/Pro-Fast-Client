@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
+import UseAuth from "../../../Hooks/UseAuth";
 
 const Register = () => {
   const {
@@ -8,15 +9,23 @@ const Register = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const {createUser} = UseAuth();
 
   const onSubmit = (data) => {
     console.log(data);
+    createUser(data.email, data.password)
+    .then(result => {
+      console.log(result.user);
+    })
+    .catch(error => {
+      console.error(error);
+    })
   };
   return (
     <div className="max-w-lg shrink-0 shadow-2xl">
       <div className="card-body">
         <form onSubmit={handleSubmit(onSubmit)} className="fieldset">
-            <div>
+          <div>
             <h1 className="text-4xl font-bold">Create an Account</h1>
             <p>Register with ProFast</p>
           </div>
@@ -24,13 +33,13 @@ const Register = () => {
           <label className="label">Email</label>
           <input
             type="email"
-            {...register("email", {required:true})}
+            {...register("email", { required: true })}
             className="input"
             placeholder="Email"
           />
-          {
-            errors.email?.type === 'required' && <p className="text-red-500">Email is Required</p>
-          }
+          {errors.email?.type === "required" && (
+            <p className="text-red-500">Email is Required</p>
+          )}
           {/* password */}
           <label className="label">Password</label>
           <input
