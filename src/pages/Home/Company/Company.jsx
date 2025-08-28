@@ -9,13 +9,14 @@ import logo5 from "../../../assets/brands/randstad.png";
 import logo6 from "../../../assets/brands/start-people 1.png";
 import logo7 from "../../../assets/brands/start.png";
 
-
 const Company = () => {
-    const logos = [logo1, logo2, logo3, logo4, logo5, logo6, logo7];
+  const logos = [logo1, logo2, logo3, logo4, logo5, logo6, logo7];
 
   return (
     <div className="py-8 bg-white space-y-10">
-        <h1 className="text-center text-4xl font-bold text-secondary">We've helped thousands of sales teams</h1>
+      <h1 className="text-center text-4xl font-bold text-secondary">
+        We've helped thousands of sales teams
+      </h1>
       <Marquee speed={50} gradient={false} pauseOnHover={true}>
         {logos.map((logo, index) => (
           <img

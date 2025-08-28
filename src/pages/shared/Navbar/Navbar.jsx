@@ -6,8 +6,9 @@ import UseAuth from "../../../Hooks/UseAuth";
 const Navbar = () => {
   const { user, logOut } = UseAuth();
   const navItems = (
-    <li>
+    <li className="flex flex-row">
       <NavLink to={"/"}>Home</NavLink>
+      <NavLink to={"/coverage"}>Coverage</NavLink>
     </li>
   );
 
@@ -43,7 +44,7 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+            className="menu menu-sm dropdown-content rounded-box  mt-3 p-2 shadow"
           >
             {navItems}
           </ul>
