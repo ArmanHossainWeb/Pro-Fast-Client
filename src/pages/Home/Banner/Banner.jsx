@@ -7,7 +7,14 @@ import banner3 from "../../../assets/banner/banner3.png";
 
 const Banner = () => {
   return (
-    <Carousel autoPlay={true} infiniteLoop={true} showThumbs={false}>
+    <Carousel
+      autoPlay={true}
+      infiniteLoop={true}
+      showThumbs={false}
+      showArrows={false}
+      showStatus={false}
+      showIndicators={false}
+    >
       <div>
         <img src={banner1} alt="Slide 1" />
       </div>

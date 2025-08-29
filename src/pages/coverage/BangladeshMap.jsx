@@ -4,7 +4,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useState } from 'react';
 
-const position = [23.6850, 90.3563]; // Center of Bangladesh
+const position = [23.6850, 90.3563]; 
 
 // Optional custom icon (can skip for default)
 const customIcon = new L.Icon({
@@ -62,7 +62,7 @@ const BangladeshMap = ({ serviceCenters }) => {
 
 
             {/* map container */}
-            <MapContainer center={position} zoom={8} scrollWheelZoom={false} className="h-full w-full z-0">
+            <MapContainer center={position} zoom={7} scrollWheelZoom={false} className="h-full w-full z-0">
                 <TileLayer
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

@@ -9,20 +9,21 @@ const Navbar = () => {
     <li className="flex flex-row">
       <NavLink to={"/"}>Home</NavLink>
       <NavLink to={"/coverage"}>Coverage</NavLink>
+      <NavLink to={"/sendParcel"}>Send a Parcel</NavLink>
     </li>
   );
 
   const handleLogout = () => {
     logOut()
-    .then(() => {
-      console.log("sin out successfully");
-    })
-    .catch(error => {
-      console.log(error);
-    })
-  }
+      .then(() => {
+        console.log("sin out successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
-    <div className="navbar bg-base-100 shadow-sm">
+    <div className="navbar bg-base-200 my-3 rounded-xl">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -49,7 +50,7 @@ const Navbar = () => {
             {navItems}
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">
+        <a className="text-xl">
           <ProFastLogo></ProFastLogo>
         </a>
       </div>
@@ -57,13 +58,12 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1">{navItems}</ul>
       </div>
       <div className="navbar-end">
-        {user ? ( // If a user exists (logged in)
-          <button className="btn btn-primary text-black" onClick={handleLogout}>
+        {user ? (
+          <button className="btn border-primary hover:btn-primary  text-black" onClick={handleLogout}>
             Log Out
           </button>
         ) : (
-          // If no user exists (not logged in)
-          <Link to={"/login"} className="btn btn-primary text-black">
+          <Link to={"/login"} className="btn border-primary hover:btn-primary  text-black">
             Login
           </Link>
         )}
