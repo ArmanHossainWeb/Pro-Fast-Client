@@ -4,9 +4,10 @@ import Home from "../pages/Home/Home/Home";
 import AuthLayout from "../layout/AuthLayout";
 import Login from "../pages/Authentication/Login/Login";
 import Register from "../pages/Authentication/Register/Register";
-import Coverage from "../pages/coverage/coverage";
+import Coverage from "../pages/coverage/Coverage";
 import PrivetRoute from "../Route/PrivetRoute/PrivetRoute";
 import SendParcel from "../pages/sendParcel/SendParcel";
+
 
 const router = createBrowserRouter([
   {
