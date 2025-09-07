@@ -147,7 +147,7 @@ const SendParcel = () => {
                   <option value="">Select Wire house</option>
                   {getServiceCentersByRegion(senderRegion).map((c) => (
                     <option key={c.district} value={c.type}>
-                      {c.district} - {c.name}
+                      {c.district}  {c.name}
                     </option>
                   ))}
                 </select>
@@ -206,7 +206,7 @@ const SendParcel = () => {
                   <option value="">Select Wire house</option>
                   {getServiceCentersByRegion(receiverRegion).map((c) => (
                     <option key={c.district} value={c.type}>
-                      {c.district} - {c.name}
+                      {c.district}  {c.name}
                     </option>
                   ))}
                 </select>
