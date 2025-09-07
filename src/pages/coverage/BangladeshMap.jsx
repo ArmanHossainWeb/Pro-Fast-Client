@@ -4,16 +4,17 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useState } from 'react';
 
-const position = [23.6850, 90.3563]; 
+//default map positon 
+const position = [23.6850, 90.3563];  
 
-// Optional custom icon (can skip for default)
+//  custom icon (can skip for default)
 const customIcon = new L.Icon({
     iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
 });
 
-// Helper component to move map
+// FlyToDistrict Component
 function FlyToDistrict({ coords }) {
     const map = useMap();
     if (coords) {
@@ -27,6 +28,7 @@ const BangladeshMap = ({ serviceCenters }) => {
     const [activeCoords, setActiveCoords] = useState(null);
     const [activeDistrict, setActiveDistrict] = useState(null);
 
+    // Search Handler
     const handleSearch = (e) => {
         e.preventDefault();
         const district = serviceCenters.find(d =>

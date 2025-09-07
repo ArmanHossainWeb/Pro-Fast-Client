@@ -9,7 +9,7 @@ const Navbar = () => {
     <li className="flex flex-row">
       <NavLink to={"/"}>Home</NavLink>
       <NavLink to={"/coverage"}>Coverage</NavLink>
-      <NavLink to={"/sendParcel"}>Send a Parcel</NavLink>
+      <NavLink to={"/sendParcel"}>Send a Parcel</NavLink> 
     </li>
   );
 
@@ -23,7 +23,7 @@ const Navbar = () => {
       });
   };
   return (
-    <div className="navbar bg-base-200 my-3 rounded-xl">
+    <div className="navbar bg-slate-100 my-3 rounded-xl">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">

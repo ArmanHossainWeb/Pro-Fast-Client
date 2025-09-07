@@ -190,7 +190,7 @@
     "region": "Chattogram",
     "district": "Feni",
     "city": "Feni",
-    "covered_area": ["Parshuram", "Daganbhuiyan", "Chhagalnaiya"],
+    "covered_area": ["Parshuram", "Daganbhuiyan", "Chhagalnaiya"   ],
     "status": "active",
     "flowchart": "https://example.com/feni-flowchart.png",
     "longitude": 91.4,

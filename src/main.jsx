@@ -12,7 +12,7 @@ Aos.init()
 createRoot(document.getElementById('root')).render(
   <StrictMode>
       <AuthProvider>
-        <div className='font-urbanist max-w-7xl mx-auto'>
+        <div className='font-urbanist max-w-6xl mx-auto'>
         <RouterProvider router={router} />
       </div>
       </AuthProvider>
