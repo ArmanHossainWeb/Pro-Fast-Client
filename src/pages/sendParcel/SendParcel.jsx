@@ -18,18 +18,37 @@ const SendParcel = () => {
   const senderRegion = watch("senderRegion");
   const receiverRegion = watch("receiverRegion");
 
+  // regions
   const regions = [...new Set(serviceCenters.map((c) => c.region))];
   const getServiceCentersByRegion = (region) =>
     serviceCenters.filter((c) => c.region === region);
 
+  // cost calculation
   const calculateCost = (data) => {
-    let base = data.type === "document" ? 50 : 100;
-    let weightCost =
-      data.type === "non-document" ? (parseFloat(data.weight) || 0) * 10 : 0;
-    let centerCost = data.receiverServiceCenter === "premium" ? 50 : 20;
-    return base + weightCost + centerCost;
+    const weight = parseFloat(data.weight) || 0;
+    const isWithinCity = data.location === "within"; // you can change how location is passed
+
+    if (data.type === "document") {
+      return isWithinCity ? 60 : 80;
+    }
+
+    if (data.type === "non-document") {
+      if (weight <= 3) {
+        return isWithinCity ? 110 : 150;
+      } else {
+        const extraWeight = weight - 3;
+        if (isWithinCity) {
+          return 110 + extraWeight * 40;
+        } else {
+          return 150 + extraWeight * 40 + 40; // extra charge for outside city
+        }
+      }
+    }
+
+    return 0;
   };
 
+  // after submit
   const onSubmit = (data) => {
     const cost = calculateCost(data);
     setPendingData({ ...data, cost, creation_date: new Date().toISOString() });
@@ -69,8 +88,10 @@ const SendParcel = () => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Parcel Info */}
-          <div className="rounded-xl p-4 bg-gray-50 ">
-            <h3 className="text-xl font-semibold mb-4">Enter Your Parcel Details</h3>
+          <div className="rounded-xl p-4 bg-gray-100 ">
+            <h3 className="text-xl font-semibold mb-4">
+              Enter Your Parcel Details
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="flex flex-col md:flex-row md:items-center md:gap-4">
                 <label className="label cursor-pointer flex items-center gap-2">
@@ -110,14 +131,18 @@ const SendParcel = () => {
                 />
               )}
             </div>
-            {errors.type && <p className="text-red-500 mt-1">Type is required</p>}
-            {errors.title && <p className="text-red-500 mt-1">Title is required</p>}
+            {errors.type && (
+              <p className="text-red-500 mt-1">Type is required</p>
+            )}
+            {errors.title && (
+              <p className="text-red-500 mt-1">Title is required</p>
+            )}
           </div>
 
           {/* Sender & Receiver Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Sender */}
-            <div className="rounded-xl p-4 bg-gray-50 ">
+            <div className="rounded-xl p-4 bg-gray-100 ">
               <h3 className="text-lg font-semibold mb-4">Sender Details</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <input
@@ -147,7 +172,7 @@ const SendParcel = () => {
                   <option value="">Select Wire house</option>
                   {getServiceCentersByRegion(senderRegion).map((c) => (
                     <option key={c.district} value={c.type}>
-                      {c.district}  {c.name}
+                      {c.district} {c.name}
                     </option>
                   ))}
                 </select>
@@ -176,7 +201,7 @@ const SendParcel = () => {
             </div>
 
             {/* Receiver */}
-            <div className="rounded-xl p-4 bg-gray-50 ">
+            <div className="rounded-xl p-4 bg-gray-100 ">
               <h3 className="text-lg font-semibold mb-4">Receiver Details</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <input
@@ -206,7 +231,7 @@ const SendParcel = () => {
                   <option value="">Select Wire house</option>
                   {getServiceCentersByRegion(receiverRegion).map((c) => (
                     <option key={c.district} value={c.type}>
-                      {c.district}  {c.name}
+                      {c.district} {c.name}
                     </option>
                   ))}
                 </select>
@@ -235,7 +260,10 @@ const SendParcel = () => {
             </div>
           </div>
 
-          <button type="submit" className="btn btn-primary w-full text-black mt-4">
+          <button
+            type="submit"
+            className="btn btn-primary w-full text-black mt-4"
+          >
             Proceed to Confirm Booking
           </button>
         </form>
