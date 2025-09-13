@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { useLoaderData } from "react-router";
+import UseAuth from "../../Hooks/UseAuth";
 
 const SendParcel = () => {
   const serviceCenters = useLoaderData();
@@ -12,6 +13,8 @@ const SendParcel = () => {
     formState: { errors },
     reset,
   } = useForm();
+
+  const {user} = UseAuth()
 
   const [pendingData, setPendingData] = useState(null);
   const type = watch("type");
@@ -26,25 +29,25 @@ const SendParcel = () => {
   // cost calculation
   const calculateCost = (data) => {
     const weight = parseFloat(data.weight) || 0;
-    const isWithinCity = data.location === "within"; // you can change how location is passed
+    const isWithInCity = data.location === "within";
 
+    // for document
     if (data.type === "document") {
-      return isWithinCity ? 60 : 80;
+      return isWithInCity ? 60 : 80;
     }
-
+    // for Non-docuemnt
     if (data.type === "non-document") {
       if (weight <= 3) {
-        return isWithinCity ? 110 : 150;
+        return isWithInCity ? 110 : 150;
       } else {
         const extraWeight = weight - 3;
-        if (isWithinCity) {
+        if (isWithInCity) {
           return 110 + extraWeight * 40;
         } else {
-          return 150 + extraWeight * 40 + 40; // extra charge for outside city
+          return 150 + extraWeight * 40 + 40;
         }
       }
     }
-
     return 0;
   };
 
