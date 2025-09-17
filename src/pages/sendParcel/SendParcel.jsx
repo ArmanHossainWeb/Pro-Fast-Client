@@ -4,6 +4,16 @@ import toast, { Toaster } from "react-hot-toast";
 import { useLoaderData } from "react-router";
 import UseAuth from "../../Hooks/UseAuth";
 
+
+// utils.js or same file
+const generateTrackingID = () => {
+  const prefix = "TRK"; // You can change to "FRESHO" or "PARCEL"
+  const timestamp = Date.now().toString(36).toUpperCase(); // base36 for shorter format
+  const randomPart = Math.random().toString(36).substring(2, 6).toUpperCase();
+  return `${prefix}-${timestamp}-${randomPart}`;
+};
+
+
 const SendParcel = () => {
   const serviceCenters = useLoaderData();
   const {
@@ -14,7 +24,7 @@ const SendParcel = () => {
     reset,
   } = useForm();
 
-  const {user} = UseAuth()
+  const { user } = UseAuth();
 
   const [pendingData, setPendingData] = useState(null);
   const type = watch("type");
@@ -54,7 +64,15 @@ const SendParcel = () => {
   // after submit
   const onSubmit = (data) => {
     const cost = calculateCost(data);
-    setPendingData({ ...data, cost, creation_date: new Date().toISOString() });
+    setPendingData({
+      ...data,
+      cost,
+      crated_by: user.email,
+      payment_status: "unpaid", 
+      delivery_status: "not-collected",
+      creation_date: new Date().toISOString(),
+      tracking_id: generateTrackingID(),
+    });
 
     toast.custom((t) => (
       <div className="bg-white p-4 rounded-xl shadow-xl border w-80">
