@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\public",
+    "\\src",
+    "\\src\\Context",
+    "\\src\\Context\\AuthContext"
+  ],
+  "SelectedNode": "\\src\\Context\\AuthContext\\AuthProvider.jsx",
+  "PreviewInSolutionExplorer": false
+}

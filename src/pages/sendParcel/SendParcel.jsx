@@ -63,10 +63,10 @@ const SendParcel = () => {
 
   // after submit
   const onSubmit = (data) => {
-    const cost = calculateCost(data);
+    const totalCost = calculateCost(data);
     setPendingData({
       ...data,
-      cost,
+      cost: totalCost, 
       crated_by: user.email,
       payment_status: "unpaid", 
       delivery_status: "not-collected",
@@ -74,11 +74,13 @@ const SendParcel = () => {
       tracking_id: generateTrackingID(),
     });
 
+    
+
     toast.custom((t) => (
       <div className="bg-white p-4 rounded-xl shadow-xl border w-80">
         <h3 className="text-lg font-semibold mb-2">Delivery Cost</h3>
         <p className="mb-4">
-          Total: <span className="font-bold">{cost} BDT</span>
+          Total: <span className="font-bold">{totalCost} BDT</span>
         </p>
         <div className="flex gap-2 justify-end">
           <button
