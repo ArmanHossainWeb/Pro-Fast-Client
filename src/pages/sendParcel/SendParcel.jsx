@@ -78,8 +78,6 @@ const SendParcel = () => {
     
 
     // save data to the server 
-    
-
     toast.custom((t) => (
       <div className="bg-white p-4 rounded-xl shadow-xl border w-80">
         <h3 className="text-lg font-semibold mb-2">Delivery Cost</h3>
