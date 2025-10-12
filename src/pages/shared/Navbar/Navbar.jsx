@@ -1,16 +1,30 @@
 import React from "react";
 import { Link, NavLink } from "react-router";
 import ProFastLogo from "../proFastLogo/ProFastLogo";
-import UseAuth from "../../../Hooks/UseAuth";
+import UseAuth from "../../../hooks/useAuth";
 
 const Navbar = () => {
   const { user, logOut } = UseAuth();
   const navItems = (
-    <li className="flex flex-row">
-      <NavLink to={"/"}>Home</NavLink>
-      <NavLink to={"/coverage"}>Coverage</NavLink>
-      <NavLink to={"/sendParcel"}>Send a Parcel</NavLink> 
-    </li>
+    <>
+      <li>
+        <NavLink to={"/"}>Home</NavLink>
+      </li>
+      <li>
+        <NavLink to={"/coverage"}>Coverage</NavLink>
+      </li>
+      <li>
+        <NavLink to={"/sendParcel"}>Send a Parcel</NavLink>
+      </li>
+
+      {user && (
+        <>
+          <li>
+            <NavLink to={"/dashboard"}>Dashboard</NavLink>
+          </li>
+        </>
+      )}
+    </>
   );
 
   const handleLogout = () => {
@@ -59,11 +73,17 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         {user ? (
-          <button className="btn border-primary hover:btn-primary  text-black" onClick={handleLogout}>
+          <button
+            className="btn border-primary hover:btn-primary  text-black"
+            onClick={handleLogout}
+          >
             Log Out
           </button>
         ) : (
-          <Link to={"/login"} className="btn border-primary hover:btn-primary  text-black">
+          <Link
+            to={"/login"}
+            className="btn border-primary hover:btn-primary  text-black"
+          >
             Login
           </Link>
         )}
