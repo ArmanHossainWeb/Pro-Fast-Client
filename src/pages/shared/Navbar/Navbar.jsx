@@ -8,19 +8,41 @@ const Navbar = () => {
   const navItems = (
     <>
       <li>
-        <NavLink to={"/"}>Home</NavLink>
+        <NavLink
+          to={"/"}
+          className={({ isActive }) => (isActive ? "text-black font-bold" : "")}
+        >
+          Home
+        </NavLink>
       </li>
       <li>
-        <NavLink to={"/coverage"}>Coverage</NavLink>
+        <NavLink
+          to={"/coverage"}
+          className={({ isActive }) => (isActive ? "text-black font-bold" : "")}
+        >
+          Coverage
+        </NavLink>
       </li>
       <li>
-        <NavLink to={"/sendParcel"}>Send a Parcel</NavLink>
+        <NavLink
+          to={"/sendParcel"}
+          className={({ isActive }) => (isActive ? "text-black font-bold" : "")}
+        >
+          Send a Parcel
+        </NavLink>
       </li>
 
       {user && (
         <>
           <li>
-            <NavLink to={"/dashboard"}>Dashboard</NavLink>
+            <NavLink
+              to={"/dashboard"}
+              className={({ isActive }) =>
+                isActive ? "text-black font-bold" : ""
+              }
+            >
+              Dashboard
+            </NavLink>
           </li>
         </>
       )}
