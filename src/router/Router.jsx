@@ -8,6 +8,7 @@ import Coverage from "../pages/coverage/Coverage";
 import PrivetRoute from "../Route/PrivetRoute/PrivetRoute";
 import SendParcel from "../pages/sendParcel/SendParcel";
 import DashboardLayout from "../layout/DashboardLayout";
+import MyParcels from "../pages/Dashboard/MyParcels/MyParcels";
 
 
 const router = createBrowserRouter([
@@ -53,6 +54,7 @@ const router = createBrowserRouter([
     children:[
       {
         path: "myParcels",
+        element: <MyParcels></MyParcels>
         
       }
     ]
