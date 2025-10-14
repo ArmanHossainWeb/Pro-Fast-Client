@@ -1,12 +1,13 @@
 import React from "react";
 import UseAuth from "../../../hooks/useAuth";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery  } from "@tanstack/react-query";
+import Swal from "sweetalert2";
 
 const MyParcels = () => {
   const { user } = UseAuth();
   const axiosSecure = UseAxiosSecure();
-  const { data: parcels = [] } = useQuery({
+  const { data: parcels = [] , refetch } = useQuery({
     queryKey: ["my-parcels", user.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/parcels?email=${user.email}`);
@@ -26,10 +27,39 @@ const MyParcels = () => {
     // implement payment logic here
   };
 
-  const handleDelete = (id) => {
-    alert(`Delete parcel: ${id}`);
-    // implement delete logic here
-  };
+  const handleDelete = async (id) => {
+     const confirm = await Swal.fire({
+            title: "Are you sure?",
+            text: "This parcel will be permanently deleted!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete it",
+            cancelButtonText: "Cancel",
+            confirmButtonColor: "#e11d48", // red-600
+            cancelButtonColor: "#6b7280",  // gray-500
+        });
+        if (confirm.isConfirmed) {
+            try {
+                axiosSecure.delete(`/parcels/${id}`)
+                    .then(res => {
+                        console.log(res.data);
+                        if (res.data.deletedCount) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Parcel has been deleted.",
+                                icon: "success",
+                                timer: 1500,
+                                showConfirmButton: false,
+                            });
+                        }
+                        refetch();
+                    })
+
+            } catch (err) {
+                Swal.fire("Error", err.message || "Failed to delete parcel", "error");
+            }
+        }
+    };
   return (
     <div className="p-4">
       <h1 className="text-xl font-semibold mb-4">My Parcels</h1>
@@ -37,6 +67,8 @@ const MyParcels = () => {
         <table className="table w-full">
           <thead>
             <tr>
+              <th>#</th>
+              <th>Title</th>
               <th>Type</th>
               <th>Created At</th>
               <th>Cost</th>
@@ -45,8 +77,10 @@ const MyParcels = () => {
             </tr>
           </thead>
           <tbody>
-            {parcels.map((parcel) => (
+            {parcels.map((parcel, index) => (
               <tr key={parcel._id}>
+                <td>{index + 1}</td>
+                <td>{parcel.title}</td>
                 <td>
                   {parcel.type === "document" ? "Document" : "Non-Document"}
                 </td>
