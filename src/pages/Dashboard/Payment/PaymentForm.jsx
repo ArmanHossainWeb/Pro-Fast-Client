@@ -1,39 +1,58 @@
-import {  CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
-import React from 'react';
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import React, { useState } from "react";
 
 const PaymentForm = () => {
-    const stripe = useStripe()
-    const elements = useElements()
+  const stripe = useStripe();
+  const elements = useElements();
 
-    const handleSubmit = e => {
-      e.preventDefault()
+  const [error, setError] = useState(" ")
 
-        if (!stripe || !elements) {
-            return;
-        }
-        
-        const card = elements.getElement(CardElement)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-
-        if(!card){
-            return;
-        }
-
-        
-
+    if (!stripe || !elements) {
+      return;
     }
 
-    return (
-        <div>
-            <form onSubmit={handleSubmit} >\
-                <CardElement>
-                    <Button type="submit" disabled={!stripe} >
-                        Pay For Parcel Pickup
-                    </Button>
-                </CardElement>
-            </form>
-        </div>
-    );
+    const card = elements.getElement(CardElement);
+
+    if (!card) {
+      return;
+    }
+
+
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: "card",
+      card,
+    });
+
+    if (error) {
+      setError(error.message)
+    } else {
+      setError(' ');
+    }
+  };
+
+  return (
+    <div>
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-4 bg-white p-6 rounded-xl shadow-md w-full max-w-md mx-auto"
+      >
+        <CardElement className="p-2 border rounded"></CardElement>
+        <button
+          type="submit"
+          disabled={!stripe}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+        >
+          Pay For Parcel Pickup
+        </button>
+        {
+            error && <p className="text-red-500">{error}</p>
+        }
+      </form>
+    </div>
+  );
 };
 
 export default PaymentForm;
