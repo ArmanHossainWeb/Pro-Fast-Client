@@ -1,9 +1,9 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import SocialLogin from "../SocialLogin/SocialLogin";
-import UseAuth from "../../../Hooks/UseAuth";
+import UseAuth from "../../../hooks/useAuth";
+
 
 const Login = () => {
   const {
@@ -12,11 +12,15 @@ const Login = () => {
     formState: { errors },
   } = useForm();
   const { signIn } = UseAuth();
+  const navigate = useNavigate();
+  
+  const from = location.state?.from || "/";
 
   const onSubmit = (data) => {
     signIn(data.email, data.password)
     .then(result => {
       console.log(result.user);
+      navigate(from)
     })
     .catch(error => {
       console.log(error);

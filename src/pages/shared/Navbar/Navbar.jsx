@@ -49,6 +49,8 @@ const Navbar = () => {
     </>
   );
 
+
+  // handle logout 
   const handleLogout = () => {
     logOut()
       .then(() => {
