@@ -30,6 +30,7 @@ const PaymentForm = () => {
       setError(error.message)
     } else {
       setError(' ');
+      console.log("payment Method", paymentMethod)
     }
   };
 
