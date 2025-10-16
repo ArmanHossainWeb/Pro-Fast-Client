@@ -7,26 +7,25 @@ import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 const PaymentForm = () => {
   const stripe = useStripe();
   const elements = useElements();
-  const [error, setError] = useState(" ")
-  const {parcelId} = useParams()
-  const  axiosSecure = UseAxiosSecure()
-  console.log(parcelId)
+  const [error, setError] = useState(" ");
+  const { parcelId } = useParams();
+  const axiosSecure = UseAxiosSecure();
+  console.log(parcelId);
 
-
-  const { isPending,data:parcelInfo = {}} = useQuery({
-    queryKey: ['parcels', parcelId],
-    queryFn: async ()=> {
-      const res = await axiosSecure.get(`/parcels/${parcelId}`)
+  const { isPending, data: parcelInfo = {} } = useQuery({
+    queryKey: ["parcels", parcelId],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/parcels/${parcelId}`);
       return res.data;
-    }
-  })
-  if(isPending){
-    return "...loeading"
+    },
+  });
+  if (isPending) {
+    return "...loeading";
   }
-  console.log(parcelInfo)
+  console.log(parcelInfo);
   const ammount = parcelInfo.cost;
-
-
+  const ammountInCents = ammount * 100;
+  console.log(ammountInCents);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,18 +40,42 @@ const PaymentForm = () => {
       return;
     }
 
-
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
       card,
     });
 
     if (error) {
-      setError(error.message)
+      setError(error.message);
     } else {
-      setError(' ');
-      console.log("payment Method", paymentMethod)
+      setError(" ");
+      console.log("payment Method", paymentMethod);
     }
+
+    // create payment intent
+    const res = await axiosSecure.post("/create-payment-intent", {
+      ammountInCents,
+      parcelId,
+    });
+    const clientSecret = res.data.clientSecret;
+
+    const result = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement),
+        billing_details: {
+          name: "Jenny Rosen",
+        },
+      },
+    });
+    if(result.error){
+      console.log(result.error.message)
+    } else {
+      if(result.paymentIntent.status === "succeeded"){
+        console.log("payment Succeeded")
+        console.log(result)
+      }
+    }
+
   };
 
   return (
@@ -69,9 +92,7 @@ const PaymentForm = () => {
         >
           Pay ${ammount}
         </button>
-        {
-            error && <p className="text-red-500">{error}</p>
-        }
+        {error && <p className="text-red-500">{error}</p>}
       </form>
     </div>
   );
