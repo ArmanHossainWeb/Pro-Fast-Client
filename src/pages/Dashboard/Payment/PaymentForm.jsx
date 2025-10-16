@@ -3,8 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useParams } from "react-router";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
+import UseAuth from "../../../hooks/useAuth";
 
 const PaymentForm = () => {
+  const { user } = UseAuth();
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState(" ");
@@ -63,19 +65,21 @@ const PaymentForm = () => {
       payment_method: {
         card: elements.getElement(CardElement),
         billing_details: {
-          name: "Jenny Rosen",
+          name: user.displayName,
+          email: user.email,
         },
       },
     });
-    if(result.error){
-      console.log(result.error.message)
+    if (result.error) {
+      setError(result.error.message)
     } else {
-      if(result.paymentIntent.status === "succeeded"){
-        console.log("payment Succeeded")
-        console.log(result)
+      setError(' ')
+      if (result.paymentIntent.status === "succeeded") {
+        console.log("payment Succeeded");
+        console.log(result);
+        
       }
     }
-
   };
 
   return (
