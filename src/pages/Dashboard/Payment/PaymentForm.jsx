@@ -71,33 +71,66 @@ const PaymentForm = () => {
       },
     });
     if (result.error) {
-      setError(result.error.message)
+      setError(result.error.message);
     } else {
-      setError(' ')
+      setError(" ");
       if (result.paymentIntent.status === "succeeded") {
         console.log("payment Succeeded");
         console.log(result);
+
+        // mark parcel paid also create payment history 
         
       }
     }
   };
 
   return (
-    <div>
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-4 bg-white p-6 rounded-xl shadow-md w-full max-w-md mx-auto"
-      >
-        <CardElement className="p-2 border rounded"></CardElement>
-        <button
-          type="submit"
-          disabled={!stripe}
-          className=" px-4 py-2 rounded bg-primary text-black hover:bg-secondary hover:text-white transition"
-        >
-          Pay ${ammount}
-        </button>
-        {error && <p className="text-red-500">{error}</p>}
-      </form>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-50 via-white to-blue-100 px-4 py-10">
+      <div className="bg-white w-full max-w-md p-8 rounded-2xl shadow-lg border border-gray-100">
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-2">
+          Complete Payment
+        </h2>
+        <p className="text-center text-gray-500 mb-6">
+          Pay securely for your parcel
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="p-4 border border-gray-300 rounded-xl bg-gray-50 shadow-sm focus-within:ring-2 focus-within:ring-blue-500 transition-all">
+            <CardElement
+              options={{
+                style: {
+                  base: {
+                    fontSize: "16px",
+                    color: "#424770",
+                    fontFamily: "Inter, sans-serif",
+                    "::placeholder": { color: "#aab7c4" },
+                  },
+                  invalid: { color: "#9e2146" },
+                },
+              }}
+            />
+          </div>
+
+          {error && (
+            <p className="text-red-500 text-center text-sm font-medium">
+              {error}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            disabled={!stripe}
+            className="w-full py-3 rounded-lg font-semibold bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md hover:opacity-90 transition-all duration-200"
+          >
+            Pay ${ammount}
+          </button>
+        </form>
+
+        <div className="mt-6 text-center text-gray-500 text-sm">
+          Secure payment powered by
+          <span className="font-semibold text-blue-600">Stripe</span>
+        </div>
+      </div>
     </div>
   );
 };
