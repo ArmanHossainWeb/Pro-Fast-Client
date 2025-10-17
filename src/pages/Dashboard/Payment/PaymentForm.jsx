@@ -1,9 +1,10 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import UseAuth from "../../../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const PaymentForm = () => {
   const { user } = UseAuth();
@@ -12,6 +13,7 @@ const PaymentForm = () => {
   const [error, setError] = useState(" ");
   const { parcelId } = useParams();
   const axiosSecure = UseAxiosSecure();
+  const navigate = useNavigate();
   console.log(parcelId);
 
   const { isPending, data: parcelInfo = {} } = useQuery({
@@ -25,9 +27,9 @@ const PaymentForm = () => {
     return "...loeading";
   }
   console.log(parcelInfo);
-  const ammount = parcelInfo.cost;
-  const ammountInCents = ammount * 100;
-  console.log(ammountInCents);
+  const amount = parcelInfo.cost;
+  const amountInCents = amount * 100;
+  console.log(amountInCents);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,9 +58,10 @@ const PaymentForm = () => {
 
     // create payment intent
     const res = await axiosSecure.post("/create-payment-intent", {
-      ammountInCents,
+      amountInCents, // frontend sends amountInCents, backend now matches
       parcelId,
     });
+
     const clientSecret = res.data.clientSecret;
 
     const result = await stripe.confirmCardPayment(clientSecret, {
@@ -76,10 +79,31 @@ const PaymentForm = () => {
       setError(" ");
       if (result.paymentIntent.status === "succeeded") {
         console.log("payment Succeeded");
+        const transactionId = result.paymentIntent.id;
         console.log(result);
 
-        // mark parcel paid also create payment history 
-        
+        // mark parcel paid also create payment history
+        const paymentData = {
+          parcelId,
+          email: user.email,
+          amount,
+          transactionId: transactionId,
+          paymentMethod: result.paymentIntent.payment_method_types,
+        };
+
+        const paymentRes = await axiosSecure.post("/payments", paymentData);
+        if (paymentRes.data.insertedId) {
+          // ✅ Show SweetAlert with transaction ID
+          await Swal.fire({
+            icon: "success",
+            title: "Payment Successful!",
+            html: `<strong>Transaction ID:</strong> <code>${transactionId}</code>`,
+            confirmButtonText: "Go to My Parcels",
+          });
+
+          // ✅ Redirect to /myParcels
+          navigate("/dashboard/myParcels");
+        }
       }
     }
   };
@@ -122,7 +146,7 @@ const PaymentForm = () => {
             disabled={!stripe}
             className="w-full py-3 rounded-lg font-semibold bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md hover:opacity-90 transition-all duration-200"
           >
-            Pay ${ammount}
+            Pay ${amount}
           </button>
         </form>
 
