@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router";
 import ProFastLogo from "../pages/shared/proFastLogo/ProFastLogo";
-import { FaHome, FaBoxOpen, FaMoneyCheckAlt, FaMapMarkedAlt, FaUserEdit } from "react-icons/fa";
+import { FaBoxOpen, FaHome, FaMapMarkedAlt, FaMoneyCheckAlt, FaUserEdit } from "react-icons/fa";
 
 const DashboardLayout = () => {
   return (

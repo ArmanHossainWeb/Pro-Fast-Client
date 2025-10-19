@@ -14,19 +14,25 @@ const Register = () => {
   const { createUser } = UseAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const from =location.state?.from || "/"
-
+  const from = location.state?.from || "/";
 
   const onSubmit = (data) => {
     console.log(data);
     createUser(data.email, data.password)
       .then((result) => {
         console.log(result.user);
-        navigate(from)
+        navigate(from);
       })
       .catch((error) => {
         console.error(error);
       });
+  };
+
+  const handleImageUpload = (e) => {
+    const image = e.target.files[0];
+    console.log(image);
+    const formdata = new FormData();
+    formdata.append("image", image);
   };
   return (
     <div className="max-w-lg shrink-0 shadow-2xl">
@@ -36,7 +42,34 @@ const Register = () => {
             <h1 className="text-4xl font-bold">Create an Account</h1>
             <p>Register with ProFast</p>
           </div>
-          {/* email field  */}
+          {/* Name field */}
+          <label className="label">Name</label>
+          <input
+            type="text"
+            {...register("name", { required: true })}
+            className="input"
+            placeholder="Name"
+          />
+          {errors.name?.type === "required" && (
+            <p className="text-red-500">Name is required</p>
+          )}
+
+          {/* Picture field */}
+          <label className="label">Profile Picture</label>
+          <input
+            type="file"
+            {...register("profile", {
+              required: true,
+              onChange: (e) => handleImageUpload(e), 
+            })}
+            className="input"
+            placeholder="Your profile picture"
+          />
+          {errors.profile?.type === "required" && (
+            <p className="text-red-500">Profile picture is required</p>
+          )}
+
+          {/* Email field */}
           <label className="label">Email</label>
           <input
             type="email"
@@ -45,9 +78,10 @@ const Register = () => {
             placeholder="Email"
           />
           {errors.email?.type === "required" && (
-            <p className="text-red-500">Email is Required</p>
+            <p className="text-red-500">Email is required</p>
           )}
-          {/* password */}
+
+          {/* Password field */}
           <label className="label">Password</label>
           <input
             type="password"
@@ -56,11 +90,11 @@ const Register = () => {
             placeholder="Password"
           />
           {errors.password?.type === "required" && (
-            <p className="text-red-500"> password is required</p>
+            <p className="text-red-500">Password is required</p>
           )}
           {errors.password?.type === "minLength" && (
             <p className="text-red-500">
-              password must be 6 charecter oo longer
+              Password must be at least 6 characters long
             </p>
           )}
 
