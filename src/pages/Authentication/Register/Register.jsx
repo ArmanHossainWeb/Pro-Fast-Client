@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import UseAuth from "../../../hooks/useAuth";
 import axios from "axios";
+import UseAxios from "../../../Hooks/UseAxios";
 
 const Register = () => {
   const {
@@ -15,25 +16,37 @@ const Register = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from || "/";
-  const [profilePic, setProfilePic] = useState(' ')
+  const [profilePic, setProfilePic] = useState(" ");
+  const axiosInstance = UseAxios();
 
   const onSubmit = (data) => {
     console.log(data);
     createUser(data.email, data.password)
-      .then((result) => {
+      .then(async (result) => {
         console.log(result.user);
-        // update user info in the database 
+        // update user info in the database
+        const userInfo = {
+          email: data.email,
+          role: "user", // default value
+          created_at: new Date().toISOString(),
+          last_log_in: new Date().toISOString(),
+        };
 
-        // update user profile in firebase 
+        const userRes = await axiosInstance.post("/users", userInfo);
+        console.log(userRes.data);
+
+        // update user profile in firebase
         const userProfile = {
           displayName: data.name,
           photoURL: profilePic,
-        }
-        updateUserProfile(userProfile).then(() => {
-          console.log("profile name picture updated")
-        }).catch(error => {
-          console.log(error)
-        })
+        };
+        updateUserProfile(userProfile)
+          .then(() => {
+            console.log("profile name picture updated");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
 
         navigate(from);
       })
@@ -48,11 +61,11 @@ const Register = () => {
     const formdata = new FormData();
     formdata.append("image", image);
 
-
-
-    const imageUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_UPLOAD_KEY}`
-    const res = await axios.post (imageUploadUrl, formdata)
-    setProfilePic(res.data.data.url)
+    const imageUploadUrl = `https://api.imgbb.com/1/upload?key=${
+      import.meta.env.VITE_IMAGE_UPLOAD_KEY
+    }`;
+    const res = await axios.post(imageUploadUrl, formdata);
+    setProfilePic(res.data.data.url);
   };
   return (
     <div className="max-w-lg shrink-0 shadow-2xl">
@@ -80,7 +93,7 @@ const Register = () => {
             type="file"
             {...register("profile", {
               required: true,
-              onChange: (e) => handleImageUpload(e), 
+              onChange: (e) => handleImageUpload(e),
             })}
             className="input"
             placeholder="Your profile picture"
