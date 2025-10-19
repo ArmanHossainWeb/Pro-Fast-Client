@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FcGoogle } from "react-icons/fc";
 import { Link, useLocation, useNavigate } from "react-router";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import UseAuth from "../../../hooks/useAuth";
+import axios from "axios";
 
 const Register = () => {
   const {
@@ -11,16 +11,30 @@ const Register = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { createUser } = UseAuth();
+  const { createUser, updateUserProfile } = UseAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from || "/";
+  const [profilePic, setProfilePic] = useState(' ')
 
   const onSubmit = (data) => {
     console.log(data);
     createUser(data.email, data.password)
       .then((result) => {
         console.log(result.user);
+        // update user info in the database 
+
+        // update user profile in firebase 
+        const userProfile = {
+          displayName: data.name,
+          photoURL: profilePic,
+        }
+        updateUserProfile(userProfile).then(() => {
+          console.log("profile name picture updated")
+        }).catch(error => {
+          console.log(error)
+        })
+
         navigate(from);
       })
       .catch((error) => {
@@ -28,11 +42,17 @@ const Register = () => {
       });
   };
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const image = e.target.files[0];
     console.log(image);
     const formdata = new FormData();
     formdata.append("image", image);
+
+
+
+    const imageUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_UPLOAD_KEY}`
+    const res = await axios.post (imageUploadUrl, formdata)
+    setProfilePic(res.data.data.url)
   };
   return (
     <div className="max-w-lg shrink-0 shadow-2xl">
