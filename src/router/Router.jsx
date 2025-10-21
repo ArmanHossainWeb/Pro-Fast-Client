@@ -13,6 +13,8 @@ import MyParcels from "../pages/Dashboard/MyParcels/MyParcels";
 import PaymentHistory from "../pages/Dashboard/paymentHistory/PaymentHistory";
 import TrackParcel from "../pages/Dashboard/trackParcel/TrackParcel";
 import BeARider from "../pages/BeARider/BeARider";
+import PendingRiders from "../pages/Dashboard/pendingRiders/PendingRiders";
+import ActiveRiders from "../pages/Dashboard/activeRiders/ActiveRiders";
 
 
 const router = createBrowserRouter([
@@ -36,6 +38,7 @@ const router = createBrowserRouter([
         }, 
         {
           path: "/beARider",
+          loader: () => fetch("./serviceCenter.json"),
           element: <PrivetRoute><BeARider></BeARider></PrivetRoute>
         }
     ]
@@ -76,6 +79,14 @@ const router = createBrowserRouter([
       {
         path:"track",
         Component: TrackParcel
+      },
+      {
+        path:"pending-riders",
+        Component: PendingRiders
+      },
+      {
+        path:"active-riders",
+        Component: ActiveRiders
       }
     ]
   }

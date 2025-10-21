@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router";
 import SocialLogin from "../SocialLogin/SocialLogin";
-import UseAuth from "../../../hooks/useAuth";
 import axios from "axios";
 import UseAxios from "../../../Hooks/UseAxios";
+import UseAuth from "../../../Hooks/useAuth";
 
 const Register = () => {
   const {
