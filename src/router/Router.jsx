@@ -12,6 +12,7 @@ import Payment from "../pages/Dashboard/Payment/Payment";
 import MyParcels from "../pages/Dashboard/MyParcels/MyParcels";
 import PaymentHistory from "../pages/Dashboard/paymentHistory/PaymentHistory";
 import TrackParcel from "../pages/Dashboard/trackParcel/TrackParcel";
+import BeARider from "../pages/BeARider/BeARider";
 
 
 const router = createBrowserRouter([
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
           path:"/sendParcel",
           loader: () => fetch("./serviceCenter.json"),
           element: <PrivetRoute><SendParcel></SendParcel></PrivetRoute>
+        }, 
+        {
+          path: "/beARider",
+          element: <PrivetRoute><BeARider></BeARider></PrivetRoute>
         }
     ]
   },

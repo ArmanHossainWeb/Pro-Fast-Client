@@ -41,15 +41,20 @@ const Accordion = () => {
   ];
   return (
     <div className="space-y-3 my-8">
-        <div className="text-center space-y-2 w-9/12 mx-auto">
-            <h1 className="text-4xl font-bold">Frequently Asked Question (FAQ)</h1>
-        <p>Enhance posture, mobility, and well-being effortlessly with Posture Pro. Achieve proper alignment, reduce pain, and strengthen your body with ease!</p>
-        </div>
-    <div>
-        {accordionData.map(accordion => <AccordionCard key={accordion.id} accordion={accordion}></AccordionCard>)}
+      <div className="text-center space-y-2 w-9/12 mx-auto">
+        <h1 className="text-4xl font-bold">Frequently Asked Question (FAQ)</h1>
+        <p>
+          Enhance posture, mobility, and well-being effortlessly with Posture
+          Pro. Achieve proper alignment, reduce pain, and strengthen your body
+          with ease!
+        </p>
+      </div>
+      <div>
+        {accordionData.map((accordion, index) => (
+          <AccordionCard key={accordion.id || index} accordion={accordion} />
+        ))}
+      </div>
     </div>
-    </div>
-    
   );
 };
 

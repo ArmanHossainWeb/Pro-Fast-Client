@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, NavLink } from "react-router";
 import ProFastLogo from "../proFastLogo/ProFastLogo";
-import UseAuth from "../../../hooks/useAuth";
+import UseAuth from "../../../Hooks/useAuth";
 
 const Navbar = () => {
   const { user, logOut } = UseAuth();
@@ -46,11 +46,18 @@ const Navbar = () => {
           </li>
         </>
       )}
+      <li>
+        <NavLink
+          to={"/beARider"}
+          className={({ isActive }) => (isActive ? "text-black font-bold" : "")}
+        >
+          Be A Rider
+        </NavLink>
+      </li>
     </>
   );
 
-
-  // handle logout 
+  // handle logout
   const handleLogout = () => {
     logOut()
       .then(() => {
@@ -88,9 +95,9 @@ const Navbar = () => {
             {navItems}
           </ul>
         </div>
-        <a className="text-xl">
+      <span  className="text-xl">
           <ProFastLogo></ProFastLogo>
-        </a>
+        </span>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{navItems}</ul>
