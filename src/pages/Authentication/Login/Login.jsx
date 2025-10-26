@@ -74,7 +74,7 @@ const Login = () => {
               </Link>
             </p>
           </div>
-          <button className="btn btn-primary text-black mt-4">Login</button>
+          <button className="btn btn-primary text-black hover:text-white mt-4">Login</button>
         </form>
         <SocialLogin></SocialLogin>
       </div>
